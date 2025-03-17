@@ -3,6 +3,10 @@ import { FileText, Download, Copy, Pencil, Sparkles, FileCode, File as FilePdf }
 import { useStore } from '../store/useStore';
 import Button from './ui/Button';
 import { formatFileSize } from '../lib/utils';
+<<<<<<< HEAD
+=======
+import { motion } from 'framer-motion';
+>>>>>>> 47400eb0474e49054b5cc703d10a4926566059d4
 
 const DocumentViewer: React.FC = () => {
   const { currentDocument, isProcessing } = useStore();

@@ -51,7 +51,11 @@ const FileUploader: React.FC = () => {
         {...getRootProps()}
         className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
           isDragActive ? 'border-primary-500 bg-primary-500/10 shadow-glow' : 
+<<<<<<< HEAD
           'border-dark-100 hover:border-primary-500/100'
+=======
+          'border-dark-100 hover:border-primary-500/50'
+>>>>>>> 47400eb0474e49054b5cc703d10a4926566059d4
         } ${
           isDragAccept ? 'border-green-500 bg-green-500/10' : ''
         } ${
@@ -68,7 +72,11 @@ const FileUploader: React.FC = () => {
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
         >
+<<<<<<< HEAD
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500/80 to-accent-600/30 flex items-center justify-center border border-primary-600/100">
+=======
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500/20 to-accent-600/20 flex items-center justify-center border border-primary-500/30">
+>>>>>>> 47400eb0474e49054b5cc703d10a4926566059d4
             <Upload className="h-8 w-8 text-primary-400" />
           </div>
           
@@ -81,7 +89,11 @@ const FileUploader: React.FC = () => {
             </p>
           </div>
           
+<<<<<<< HEAD
           <div className="flex gap-2 mt-2 shadow-glow rounded-full">
+=======
+          <div className="flex gap-2 mt-2">
+>>>>>>> 47400eb0474e49054b5cc703d10a4926566059d4
             <Button 
               type="button" 
               variant="outline" 
@@ -92,14 +104,22 @@ const FileUploader: React.FC = () => {
             </Button>
           </div>
           
+<<<<<<< HEAD
           <div className="flex flex-wrap justify-center gap-4 mt-4 rounded-full">
+=======
+          <div className="flex flex-wrap justify-center gap-4 mt-4">
+>>>>>>> 47400eb0474e49054b5cc703d10a4926566059d4
             <div className="flex items-center gap-2 text-xs text-gray-400">
               {getFileIcon('pdf')}
               <span>PDF</span>
             </div>
             <div className="flex items-center gap-2 text-xs text-gray-400">
               {getFileIcon('doc')}
+<<<<<<< HEAD
               <span>DOCX</span>
+=======
+              <span>DOC/DOCX</span>
+>>>>>>> 47400eb0474e49054b5cc703d10a4926566059d4
             </div>
             <div className="flex items-center gap-2 text-xs text-gray-400">
               {getFileIcon('txt')}
