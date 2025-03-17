@@ -1,0 +1,140 @@
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import FileUploader from './components/FileUploader';
+import DocumentList from './components/DocumentList';
+import DocumentViewer from './components/DocumentViewer';
+import ChatInterface from './components/ChatInterface';
+import AIModelSelector from './components/AIModelSelector';
+import SubscriptionPlans from './components/SubscriptionPlans';
+import { useStore } from './store/useStore';
+
+function App() {
+  const { theme } = useStore();
+
+  useEffect(() => {
+    document.documentElement.classList.add('transition-colors');
+    document.body.classList.add('transition-colors');
+    
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    }
+  }, [theme]);
+
+  return (
+    <Router>
+      <div className={`relative min-h-screen transition-all duration-300 ease-in-out 
+        ${theme === 'dark' 
+          ? 'bg-gradient-to-b from-dark-300 to-dark-500 text-gray-100' 
+          : 'bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900'}`}
+      >
+        <div className="relative z-10">
+          <Header />
+          
+          <main className="container mx-auto px-4 py-8">
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                  >
+                    <h1 className={`text-4xl font-bold text-center mb-3 gradient-text transition-colors duration-300
+                      ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}
+                    >
+                      Document Management & AI Analysis
+                    </h1>
+                    <p className={`text-center max-w-2xl mx-auto transition-colors duration-300
+                      ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+                    >
+                      Upload your documents, analyze them with AI, and get intelligent insights through our advanced summarization and chat features.
+                    </p>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="mb-12"
+                  >
+                    <FileUploader />
+                  </motion.div>
+                  
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="lg:col-span-1 space-y-6"
+                    >
+                      <div className={`rounded-3xl shadow-lg p-6 border transition-colors duration-300
+                        ${theme === 'dark' 
+                          ? 'bg-dark-200 border-dark-100 text-gray-100' 
+                          : 'bg-white border-gray-200 text-gray-900'}`}
+                      >
+                        <h2 className={`text-xl font-semibold mb-4 transition-colors duration-300
+                          ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}
+                        >
+                          Your Documents
+                        </h2>
+                        <DocumentList />
+                      </div>
+                      
+                      <div className={`rounded-xl shadow-lg p-6 border transition-colors duration-300
+                        ${theme === 'dark' 
+                          ? 'bg-dark-200 border-dark-100 text-gray-100' 
+                          : 'bg-white border-gray-200 text-gray-900'}`}
+                      >
+                        <AIModelSelector />
+                      </div>
+                    </motion.div>
+                    
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      className="lg:col-span-2 grid grid-cols-1 gap-8"
+                    >
+                      <div className={`h-[400px] transition-colors duration-300
+                        ${theme === 'dark' ? 'bg-dark-200 text-gray-100' : 'bg-white text-gray-900'}`}
+                      >
+                        <DocumentViewer />
+                      </div>
+                      
+                      <div className={`h-[500px] transition-colors duration-300
+                        ${theme === 'dark' ? 'bg-dark-200 text-gray-100' : 'bg-white text-gray-900'}`}
+                      >
+                        <ChatInterface />
+                      </div>
+                    </motion.div>
+                  </div>
+                </>
+              } />
+              <Route path="/subscription" element={<SubscriptionPlans />} />
+            </Routes>
+          </main>
+          
+          <footer className={`border-t py-6 mt-12 transition-colors duration-300
+            ${theme === 'dark' 
+              ? 'bg-dark-300 border-dark-100 text-gray-500' 
+              : 'bg-gray-100 border-gray-200 text-gray-600'}`}
+          >
+            <div className="container mx-auto px-4 text-center text-sm">
+              <p>© 2025 DataMind. All rights reserved.</p>
+              <p className="mt-2">Secure document management with advanced AI capabilities.</p>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
