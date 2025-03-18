@@ -12,19 +12,15 @@ const Header: React.FC = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = () => {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
+0
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  const openAuthModal = () => {   {/* Login navigation */}
-    setIsAuthModalOpen(true);
-    navigate('/login');
-  };
 
   const closeAuthModal = () => {
     setIsAuthModalOpen(false);

@@ -19,13 +19,7 @@ const Form: React.FC = () => {
           <select className="bg-gray-700 text-gray-200 border-0 rounded-3xl p-2 mb-4 hover:bg-primary-500/30 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="gender">
             <option value="male">Male</option>
             <option value="female">Female</option>
-            <option value="other">Transgender</option>
-            <option value="other">Agender</option>
-            <option value="other">Abimegender</option>
-            <option value="other">Adamas gender</option>
-            <option value="other">Aerogender</option>
-            <option value="other">Sigma Male</option>
-            <option value="other">Girlflux</option>
+            <option value="other">Other</option>
           </select>
           <label className="text-sm mb-2 text-gray-200 cursor-pointer" htmlFor="age">
             Age
