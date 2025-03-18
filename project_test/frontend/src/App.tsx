@@ -8,6 +8,8 @@ import DocumentViewer from './components/DocumentViewer';
 import ChatInterface from './components/ChatInterface';
 import AIModelSelector from './components/AIModelSelector';
 import SubscriptionPlans from './components/SubscriptionPlans';
+import LoginRegister from './components/LoginRegister';
+import Form from './components/Form';
 import { useStore } from './store/useStore';
 
 function App() {
@@ -118,6 +120,8 @@ function App() {
                 </>
               } />
               <Route path="/subscription" element={<SubscriptionPlans />} />
+              <Route path="/login" element={<LoginRegister />} />
+              <Route path="/register" element={<Form />} />
             </Routes>
           </main>
           

@@ -12,7 +12,7 @@ const plans = [
   {
     name: 'Pro Upgrade',
     price: '$5/month',
-    features: ['Everything in free', '✓ Access to GPT-40 and Claude 3 Opus', '✓ Enhanced access', '✓ 5000 tokens per day'],
+    features: ['✓ Everything in free', '✓ Access to GPT-40 and Claude 3 Opus', '✓ Enhanced access', '✓ 5000 tokens per day'],
     current: false,
     
   },
@@ -34,7 +34,7 @@ const SubscriptionPlans: React.FC = () => {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`p-6 rounded-3xl shadow-lg border-blue-200 
+              className={`p-6 rounded-3xl shadow-lg border-blue-200 hover:bg-primary-500/10 transition-colors duration-300
                 ${plan.current ? 'bg-primary-500/20' : 'bg-dark-200'}`}
             >
               <h2 className="text-2xl font-bold mb-4">{plan.name}</h2>
@@ -53,10 +53,14 @@ const SubscriptionPlans: React.FC = () => {
                 </Button>
               )}
               {plan.bestValue && (
-                <p className="mt-4 text-sm text-primary-500">Best Value</p>
+                <p className="mt-5 text-sm justify-self-start rounded-full text-white border border-blue-300 bg-blue-500/30 px-3 py-1" >
+                  Best Value
+                </p>
               )}
               {plan.current && (
-                <p className="mt-4 text-sm text-green-500">Current Plan</p>
+                <p className="mt-4 text-sm text-green-500">
+                  Current Plan
+                </p>
               )}
             </div>
           ))}
