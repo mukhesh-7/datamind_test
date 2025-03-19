@@ -37,14 +37,14 @@ const LoginRegister: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="email"
-            className="w-full p-2 border rounded mb-3"
+            className="w-full p-2 border rounded mb-3 bg-gray-700 text-gray-200 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            className="w-full p-2 border rounded mb-3"
+            className="w-full p-2 border rounded mb-3 bg-gray-700 text-gray-200 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
