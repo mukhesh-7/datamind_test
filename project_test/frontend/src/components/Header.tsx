@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-0
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -31,6 +31,15 @@ const Header: React.FC = () => {
       navigate('/');
     } else {
       navigate('/subscription');
+    }
+  };
+
+  const handleNavigation = (path: string) => {
+    if (location.pathname === path) {
+      // Trigger out-animation if already on the same page
+      navigate('/');
+    } else {
+      navigate(path);
     }
   };
 
@@ -57,15 +66,15 @@ const Header: React.FC = () => {
         </motion.div>
 
         <div className="flex items-center space-x-5 mt-2 my-2">
-          <Button size="sm" className="text-white bg-none px-2 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => navigate('/')}>
+          <Button size="sm" className="text-white bg-none px-2 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => handleNavigation('/')}>
             Home
           </Button>
 
-          <Button size="sm" className="text-white bg-none px-1 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => navigate('/dashboard')}>
+          <Button size="sm" className="text-white bg-none px-1 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => handleNavigation('/dashboard')}>
             Dashboard
           </Button>
 
-          <Button size="sm" className="text-white px-3 py-1 my-2-1 rounded-full bg-none shadow-md hover:bg-primary-600 transition-colors duration-300 text-sm" onClick={() => navigate('/register')}>
+          <Button size="sm" className="text-white px-3 py-1 my-2-1 rounded-full bg-none shadow-md hover:bg-primary-600 transition-colors duration-300 text-sm" onClick={() => handleNavigation('/register')}>
             Register
           </Button>
         

@@ -1,10 +1,9 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const Form = () => {
   return (
     <StyledWrapper>
-      <form className="form">
+      <form className="form shadow-glow">
         <div className="flex-column">
           <label>Email </label>
         </div>
@@ -29,7 +28,7 @@ const Form = () => {
         <div className="flex-row">
           <div>
             <input type="radio" />
-            <label>Remember me </label>
+            <label> Remember me </label>
           </div>
           <span className="span">Forgot password?</span>
         </div>
@@ -112,6 +111,7 @@ const StyledWrapper = styled.div`
     padding-left: 10px;
     transition: 0.2s ease-in-out;
     background-color: #2b2b2b;
+    rounded: 100px;
   }
 
   .input {
