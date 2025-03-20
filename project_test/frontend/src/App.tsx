@@ -11,6 +11,7 @@ import SubscriptionPlans from './components/SubscriptionPlans';
 import LoginRegister from './components/LoginRegister';
 import Form from './components/Form';
 import { useStore } from './store/useStore';
+import { AuthProvider } from './auth/AuthContext';
 
 const pageVariants = {
   initial: {
@@ -180,32 +181,34 @@ function App() {
   }, [theme]);
 
   return (
-    <Router>
-      <div className={`relative min-h-screen transition-all duration-300 ease-in-out 
-        ${theme === 'dark' 
-          ? 'bg-gradient-to-b from-dark-300 to-dark-500 text-gray-100' 
-          : 'bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900'}`}
-      >
-        <div className="relative z-10">
-          <Header />
-          
-          <main className="container mx-auto px-4 py-8">
-            <AnimatedRoutes />
-          </main>
-          
-          <footer className={`border-t py-6 mt-12 transition-colors duration-300
-            ${theme === 'dark' 
-              ? 'bg-dark-300 border-dark-100 text-gray-500' 
-              : 'bg-gray-100 border-gray-200 text-gray-600'}`}
-          >
-            <div className="container mx-auto px-4 text-center text-sm">
-              <p>© 2025 DataMind. All rights reserved.</p>
-              <p className="mt-2">Secure document management with advanced AI capabilities.</p>
-            </div>
-          </footer>
+    <AuthProvider>
+      <Router>
+        <div className={`relative min-h-screen transition-all duration-300 ease-in-out 
+          ${theme === 'dark' 
+            ? 'bg-gradient-to-b from-dark-300 to-dark-500 text-gray-100' 
+            : 'bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900'}`}
+        >
+          <div className="relative z-10">
+            <Header />
+            
+            <main className="container mx-auto px-4 py-8">
+              <AnimatedRoutes />
+            </main>
+            
+            <footer className={`border-t py-6 mt-12 transition-colors duration-300
+              ${theme === 'dark' 
+                ? 'bg-dark-300 border-dark-100 text-gray-500' 
+                : 'bg-gray-100 border-gray-200 text-gray-600'}`}
+            >
+              <div className="container mx-auto px-4 text-center text-sm">
+                <p>© 2025 DataMind. All rights reserved.</p>
+                <p className="mt-2">Secure document management with advanced AI capabilities.</p>
+              </div>
+            </footer>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -44,7 +44,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    // header of the website 
+    // Header of the website 
     <header className="bg-gray-500 border border-cyan-200 backdrop-brightness-150 py-2 px-4 mt-7 mx-6 rounded-full shadow-glow shadow-blue-600 backdrop-blur-lg bg-opacity-30">
       <div className="flex items-center justify-between">
         <motion.div 
@@ -70,9 +70,9 @@ const Header: React.FC = () => {
             Home
           </Button>
 
-          <Button size="sm" className="text-white bg-none px-1 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => handleNavigation('/dashboard')}>
+          {/* <Button size="sm" className="text-white bg-none px-1 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => handleNavigation('/dashboard')}>
             Dashboard
-          </Button>
+          </Button> */}
 
           <Button size="sm" className="text-white px-3 py-1 my-2-1 rounded-full bg-none shadow-md hover:bg-primary-600 transition-colors duration-300 text-sm" onClick={() => handleNavigation('/register')}>
             Register

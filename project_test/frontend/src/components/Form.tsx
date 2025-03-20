@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, X, CheckCircle, AlertCircle } from 'lucide-react';
+
+interface FormErrors {
+  username?: string;
+  email?: string;
+  password?: string;
+}
 
 const Form = () => {
+  const navigate = useNavigate();
+  const { login, signup } = useAuth();
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [notification, setNotification] = useState({ message: '', type: 'success' as 'success' | 'error', show: false });
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,12 +31,82 @@ const Form = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    const errors = [];
+    if (password.length < minLength) errors.push(`At least ${minLength} characters`);
+    if (!hasUpper) errors.push('One uppercase letter');
+    if (!hasLower) errors.push('One lowercase letter');
+    if (!hasNumber) errors.push('One number');
+    if (!hasSpecial) errors.push('One special character');
+
+    return errors;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(isLogin ? 'Logging in with:' : 'Signing up with:', formData);
+    const newErrors: FormErrors = {};
+
+    // Form validation
+    if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.password) newErrors.password = 'Password is required';
+    if (!isLogin && !formData.username) newErrors.username = 'Username is required';
+
+    // Password validation for signup
+    if (!isLogin) {
+      const passwordErrors = validatePassword(formData.password);
+      if (passwordErrors.length > 0) {
+        newErrors.password = `Password must contain: ${passwordErrors.join(', ')}`;
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    try {
+      const result = isLogin
+        ? await login(formData.email, formData.password)
+        : await signup(formData.username, formData.email, formData.password);
+
+      setNotification({
+        message: result.message,
+        type: result.success ? 'success' : 'error',
+        show: true
+      });
+
+      if (result.success) {
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
+      }
+    } catch (error) {
+      setNotification({
+        message: 'An error occurred',
+        type: 'error',
+        show: true
+      });
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      username: '',
+      email: '',
+      password: ''
+    });
+    setErrors({});
+    setShowPassword(false);
   };
 
   const toggleForm = () => {
+    resetForm();
     setIsLogin(!isLogin);
   };
 
@@ -33,19 +115,75 @@ const Form = () => {
     setShowPassword(!showPassword);
   };
 
+  const renderError = (field: keyof FormErrors) => {
+    return errors[field] ? (
+      <span className="text-red-500 text-xs mt-1">{errors[field]}</span>
+    ) : null;
+  };
+
+  const formVariants = {
+    initial: {
+      opacity: 0,
+      y: 20,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'tween',
+        ease: 'anticipate',
+        duration: 0.5
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: {
+        type: 'tween',
+        ease: 'anticipate',
+        duration: 0.5
+      }
+    }
+  };
+
   return (
     <StyledWrapper>
       <AnimatePresence mode="wait">
+        {notification.show && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className={`notification ${notification.type}`}
+          >
+            <div className="notification-content">
+              {notification.type === 'success' ? (
+                <CheckCircle className="h-5 w-5" />
+              ) : (
+                <AlertCircle className="h-5 w-5" />
+              )}
+              <span>{notification.message}</span>
+              <button
+                onClick={() => setNotification(prev => ({ ...prev, show: false }))}
+                className="close-button"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+
         <motion.form 
           className="form shadow-glow"
           key={isLogin ? 'login' : 'signup'}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
+          variants={formVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           onSubmit={handleSubmit}
+          layoutId="auth-form"
         >
-          <div className="flex-column">
+          <div className="flex-column py-2">
             <label>{isLogin ? 'Login' : 'Create Account'}</label>
           </div>
           
@@ -67,6 +205,7 @@ const Form = () => {
                   onChange={handleInputChange}
                 />
               </div>
+              {renderError('username')}
             </>
           )}
 
@@ -88,6 +227,7 @@ const Form = () => {
               onChange={handleInputChange}
             />
           </div>
+          {renderError('email')}
           <div className="flex-column">
             <label>Password </label>
           </div>
@@ -117,6 +257,7 @@ const Form = () => {
               )}
             </button>
           </div>
+          {renderError('password')}
           {isLogin && ( // Only show these options for login
             <div className="flex-row">
               <div>
@@ -129,16 +270,21 @@ const Form = () => {
           <button type="submit" className="button-submit shadow-glow">
             {isLogin ? 'Sign In' : 'Sign Up'}
           </button>
-          <p className="p">
+          <p className="p"> 
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <span className="span" onClick={toggleForm}>
               {isLogin ? 'Sign Up' : 'Sign In'}
             </span>
           </p>
-          {isLogin &&
-          <p className="p line mt-3">Or SignIn With</p> 
-          }  
+          
+          {isLogin ? (
+            <p className="p line mt-3">Or Login with</p>
+          ) : (
+            <p className="p line mt-3">Continue with</p>
+          )}
+          
           <div className="flex-row">
+            
             <button className="btn google">
               <svg version="1.1" width={20} id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style={{enableBackground: 'new 0 0 512 512'}} xmlSpace="preserve">
                 <path style={{fill: '#FBBB00'}} d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256
@@ -177,7 +323,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #121212;
+  background-color: transparent; /* Changed from #121212 to transparent */
 
   .form {
     display: flex;
@@ -189,6 +335,9 @@ const StyledWrapper = styled.div`
     border-radius: 20px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
   }
 
   ::placeholder {
@@ -322,6 +471,60 @@ const StyledWrapper = styled.div`
 
   .password-toggle:focus {
     outline: none;
+  }
+
+  .text-red-500 {
+    color: #ef4444;
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    min-width: 300px;
+  }
+
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .notification.success .notification-content {
+    background-color: rgba(34, 197, 94, 0.9);
+    color: white;
+  }
+
+  .notification.error .notification-content {
+    background-color: rgba(239, 68, 68, 0.9);
+    color: white;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: currentColor;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-left: auto;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .button-submit {
+    width: 100%;
+    align-self: center;
   }
 `;
 
