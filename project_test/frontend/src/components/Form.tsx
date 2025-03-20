@@ -183,7 +183,7 @@ const Form = () => {
           onSubmit={handleSubmit}
           layoutId="auth-form"
         >
-          <div className="flex-column py-2">
+          <div className="flex-column p">
             <label>{isLogin ? 'Login' : 'Create Account'}</label>
           </div>
           
@@ -323,7 +323,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: transparent; /* Changed from #121212 to transparent */
+  background-color: #121212;
 
   .form {
     display: flex;
