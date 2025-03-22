@@ -145,7 +145,7 @@ const AnimatedRoutes = () => {
             variants={pageVariants}
             transition={pageTransition}
           >
-            <LoginRegister />
+            <Form />
           </motion.div>
         } />
         <Route path="/register" element={

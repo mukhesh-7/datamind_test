@@ -4,11 +4,13 @@ import { FileText, Sparkles } from 'lucide-react';
 import Button from './ui/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AuthModal from '../auth/AuthModal';
+import { useAuth } from '../auth/AuthContext';
 
 const Header: React.FC = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -35,12 +37,11 @@ const Header: React.FC = () => {
   };
 
   const handleNavigation = (path: string) => {
-    if (location.pathname === path) {
-      // Trigger out-animation if already on the same page
-      navigate('/');
-    } else {
-      navigate(path);
-    }
+    navigate(path);
+  };
+
+  const handleAuthClick = () => {
+    navigate('/login');
   };
 
   return (
@@ -70,11 +71,7 @@ const Header: React.FC = () => {
             Home
           </Button>
 
-          {/* <Button size="sm" className="text-white bg-none px-1 py-1 rounded-full shadow-md hover:bg-primary-600" onClick={() => handleNavigation('/dashboard')}>
-            Dashboard
-          </Button> */}
-
-          <Button size="sm" className="text-white px-3 py-1 my-2-1 rounded-full bg-none shadow-md hover:bg-primary-600 transition-colors duration-300 text-sm" onClick={() => handleNavigation('/register')}>
+          <Button size="sm" className="text-white px-3 py-1 my-2-1 rounded-full bg-none shadow-md hover:bg-primary-600 transition-colors duration-300 text-sm" onClick={handleAuthClick}>
             Register
           </Button>
         

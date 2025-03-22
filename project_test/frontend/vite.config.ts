@@ -7,6 +7,9 @@ export default defineConfig({
   server : {
     port : 8000,
   },
+  build: {
+    chunkSizeWarningLimit: 1000 // Increase from 500 KB to 1000 KB
+  },
   optimizeDeps: {
     exclude: [],
   },

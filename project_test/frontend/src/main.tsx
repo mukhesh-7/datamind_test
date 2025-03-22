@@ -51,7 +51,6 @@ window.onload = () => {
   // set on load so screen readers can see latest value on the button
   reflectPreference();
 
-  // now this script can find and listen for clicks on the control
   const themeToggle = document.querySelector('#theme-toggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', onClick);
