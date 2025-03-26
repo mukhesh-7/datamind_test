@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 
-const CLIENT_ID = "1071489933676-kmm2c4h6i5rtoitg3vvl86ag4385vs3b.apps.googleusercontent.com";
+const CLIENT_ID = "{YOUR_CLIEND_ID}";
 
 export const useGoogleAuth = (onSuccess: (userData: any) => void) => {
   return useGoogleLogin({
@@ -81,7 +81,6 @@ export const initGoogleAuth = async (): Promise<void> => {
               localStorage.setItem('user', JSON.stringify(user));
               localStorage.setItem('isAuthenticated', 'true');
               
-              // Add success message to storage for Form component to display
               sessionStorage.setItem('authSuccess', JSON.stringify({
                 message: 'Google Sign-in successful! Welcome ' + userInfo.name,
                 show: true
@@ -155,16 +154,13 @@ export const signInWithGoogle = async () => {
   try {
     await initGoogleAuth();
     
-    // Directly trigger the consent screen
     window.google.accounts.id.prompt((notification: any) => {
       if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        // Fallback to manual OAuth flow if prompt doesn't work
         const auth2 = window.google.accounts.oauth2.initTokenClient({
           client_id: CLIENT_ID,
           scope: 'email profile',
           callback: (response: any) => {
             if (response.access_token) {
-              // Handle successful sign in
               console.log('OAuth successful');
             }
           },
@@ -180,14 +176,12 @@ export const signInWithGoogle = async () => {
 
 export const signOutGoogle = async () => {
   try {
-    // Handle the sign-out process here
   } catch (error) {
     console.error("Google sign-out error:", error);
     throw error;
   }
 };
 
-// Add type declaration for google accounts
 declare global {
   interface Window {
     google: any;
