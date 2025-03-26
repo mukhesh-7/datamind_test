@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../types';
+import { getGoogleUser } from './google_oauth';
 
 interface AuthContextType {
   user: User | null;

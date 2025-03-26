@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, BrowserRouter } from 'react-router-dom';
 import Header from './components/Header';
 import FileUploader from './components/FileUploader';
 import DocumentList from './components/DocumentList';
@@ -181,8 +181,8 @@ function App() {
   }, [theme]);
 
   return (
-    <AuthProvider>
-      <Router>
+    <BrowserRouter>
+      <AuthProvider>
         <div className={`relative min-h-screen transition-all duration-300 ease-in-out 
           ${theme === 'dark' 
             ? 'bg-gradient-to-b from-dark-300 to-dark-500 text-gray-100' 
@@ -207,8 +207,8 @@ function App() {
             </footer>
           </div>
         </div>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
