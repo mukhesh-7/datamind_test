@@ -1,8 +1,8 @@
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
 
-const client_id = "1071489933676-kmm2c4h6i5rtoitg3vvl86ag4385vs3b.apps.googleusercontent.com"; // Updated client ID
-const client_secret = "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"; // Updated client secret
+const client_id = "{YOUR_CLIENT_ID}"; // Updated client ID
+const client_secret = "{YOUR_CLIENT_SECRET}"; // Updated client secret
 const redirect_uris = ["http://localhost:8000"];
 
 const oAuth2Client = new OAuth2Client(client_id, client_secret, redirect_uris[0]);
