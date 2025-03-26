@@ -1,9 +1,9 @@
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
 
-const client_id = "1071489933676-kmm2c4h6i5rtoitg3vvl86ag4385vs3b.apps.googleusercontent.com"; // Insert your Google Client ID here
-const client_secret = "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"; // Insert your Google Client Secret here
-const redirect_uris = ["http://localhost:8000"]; // Ensure this matches your OAuth redirect URI
+const client_id = "{YOUR_CLIEND_ID}"; 
+const client_secret = "{YOUR_CLIEND_SECRET}"; 
+const redirect_uris = ["http://localhost:8000"];
 
 const oAuth2Client = new OAuth2Client(client_id, client_secret, redirect_uris[0]);
 
@@ -23,13 +23,11 @@ export const getGoogleUser = async (code: string) => {
   return userInfo.data;
 };
 
-// Function to handle OAuth consent screen and redirect
 export const handleOAuthConsent = () => {
   const authUrl = getGoogleAuthURL();
   window.location.href = authUrl;
 };
 
-// Ensure Google API script is loaded
 declare global {
   interface Window {
     gapi: any;
