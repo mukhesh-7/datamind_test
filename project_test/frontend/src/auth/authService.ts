@@ -13,3 +13,8 @@ export const logout = () => {
 export const isAuthenticated = () => {
   return localStorage.getItem('auth') !== null;
 };
+
+export const resetPassword = async (email: string) => {
+  console.log(`Simulating sending password reset email to: ${email}`);
+  return { success: true, message: `Password reset email sent to ${email}.` };
+};

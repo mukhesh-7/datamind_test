@@ -10,6 +10,17 @@ interface AuthContextType {
   isAuthenticated: boolean;
 }
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  preferences: {
+    theme: 'dark' | 'light';
+    fontSize: 'small' | 'medium' | 'large';
+  };
+  profilePicture?: string; // Add this property
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -40,12 +51,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: user.id,
         name: user.username,
         email: user.email,
-        preferences: { theme: 'dark' as const, fontSize: 'medium' }
+        preferences: { theme: 'dark' as const, fontSize: 'medium' },
+        profilePicture: user.profilePicture || '' // Ensure profilePicture is included
       };
 
       localStorage.setItem('user', JSON.stringify(sessionUser));
       setUser(sessionUser);
       setIsAuthenticated(true);
+
+      // Refresh the page
+      setTimeout(() => window.location.reload(), 0);
 
       return { success: true, message: 'Login successfully completed' };
     } catch (error) {
@@ -85,6 +100,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
+
+    // Refresh the page
+    window.location.reload();
   };
 
   return (
