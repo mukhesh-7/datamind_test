@@ -7,9 +7,11 @@ import DocumentList from './components/DocumentList';
 import DocumentViewer from './components/DocumentViewer';
 import ChatInterface from './components/ChatInterface';
 import AIModelSelector from './components/AIModelSelector';
+import Spline from '@splinetool/react-spline/next';
 import SubscriptionPlans from './components/SubscriptionPlans';
 import LoginRegister from './components/LoginRegister';
 import Form from './components/Form';
+import ForgotPassword from './components/ForgotPassword';
 import { useStore } from './store/useStore';
 import { AuthProvider } from './auth/AuthContext';
 
@@ -39,7 +41,7 @@ const AnimatedRoutes = () => {
   const { theme } = useStore();
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="sync">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={
           <motion.div
@@ -159,14 +161,14 @@ const AnimatedRoutes = () => {
             <Form />
           </motion.div>
         } />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </AnimatePresence>
   );
 };
 
 function App() {
-  const { theme } = useStore();
-
+  const {theme } = useStore();
   useEffect(() => {
     document.documentElement.classList.add('transition-colors');
     document.body.classList.add('transition-colors');
@@ -181,7 +183,10 @@ function App() {
   }, [theme]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter
+    future={{
+      v7_relativeSplatPath: true,
+    }}>
       <AuthProvider>
         <div className={`relative min-h-screen transition-all duration-300 ease-in-out 
           ${theme === 'dark' 

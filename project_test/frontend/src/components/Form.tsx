@@ -76,16 +76,25 @@ const Form = () => {
         ? await login(formData.email, formData.password)
         : await signup(formData.username, formData.email, formData.password);
 
-      setNotification({
-        message: result.message,
-        type: result.success ? 'success' : 'error',
-        show: true
-      });
-
       if (result.success) {
-        setTimeout(() => {
-          navigate('/');
-        }, 1500);
+        setNotification({
+          message: result.message,
+          type: 'success',
+          show: true
+        });
+
+        // Delay navigation until animation completes
+        await new Promise(resolve => setTimeout(resolve, 400));
+        navigate('/', { 
+          replace: true,
+          state: { animate: true }
+        });
+      } else {
+        setNotification({
+          message: result.message,
+          type: 'error',
+          show: true
+        });
       }
     } catch (error) {
       setNotification({
@@ -106,22 +115,34 @@ const Form = () => {
     setShowPassword(false);
   };
 
+  const formVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0.98,
+      y: 20
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1],
+      }
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.96,
+      y: -10,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1],
+      }
+    }
+  };
+
   const toggleForm = () => {
     resetForm();
-    
-    // If already in signup mode and clicking register again, or switching to register
-    if (!isLogin && isLogin) {
-      setNotification({
-        message: 'Redirecting to home page...',
-        type: 'success',
-        show: true
-      });
-      
-      setTimeout(() => {
-        navigate('/');
-      }, 1500);
-    }
-    
     setIsLogin(!isLogin);
   };
 
@@ -134,31 +155,6 @@ const Form = () => {
     return errors[field] ? (
       <span className="text-red-500 text-xs mt-1">{errors[field]}</span>
     ) : null;
-  };
-
-  const formVariants = {
-    initial: {
-      opacity: 0,
-      y: 20,
-    },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'tween',
-        ease: 'anticipate',
-        duration: 0.5
-      }
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        type: 'tween',
-        ease: 'anticipate',
-        duration: 0.5
-      }
-    }
   };
 
   const loginWithGoogle = useGoogleAuth((userData) => {
@@ -192,9 +188,42 @@ const Form = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    const email = formData.email;
+    if (!email) {
+      setNotification({
+        message: 'Please enter your email address to reset your password.',
+        type: 'error',
+        show: true
+      });
+      return;
+    }
+
+    try {
+      // Simulate sending a password reset email
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      setNotification({
+        message: 'Password reset instructions have been sent to your email.',
+        type: 'success',
+        show: true
+      });
+    } catch (error) {
+      setNotification({
+        message: 'Failed to send password reset instructions. Please try again later.',
+        type: 'error',
+        show: true
+      });
+    }
+  };
+
   return (
     <StyledWrapper>
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" onExitComplete={() => {
+        // Clean up after exit animation
+        if (!isLogin) {
+          resetForm();
+        }
+      }}>
         {notification.show && (
           <motion.div
             initial={{ opacity: 0, y: -50 }}
@@ -228,6 +257,9 @@ const Form = () => {
           exit="exit"
           onSubmit={handleSubmit}
           layoutId="auth-form"
+          transition={{
+            layout: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
+          }}
         >
           <div className="flex-column">
             <label>{isLogin ? 'Login' : 'Create Account'}</label>
@@ -308,7 +340,7 @@ const Form = () => {
                 <input type="radio" />
                 <label> Remember me </label>
               </div>
-              <span className="span">Forgot password?</span>
+              <span className="span" onClick={() => navigate('/forgot-password')}>Forgot password?</span>
             </div>
           )}
 

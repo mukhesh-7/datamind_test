@@ -9,6 +9,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [notification, setNotification] = useState({ message: "", type: "" });
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -23,6 +24,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        {notification.message && (
+          <div className={`notification ${notification.type}`}>
+            {notification.message}
+          </div>
+        )}
         <h2 className="text-xl font-bold mb-4">{isLogin ? 'Login' : 'Register'}</h2>
         <form onSubmit={handleSubmit}>
           <input
@@ -43,7 +49,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
             {isLogin ? 'Login' : 'Register'}
           </button>
         </form>
-        <button onClick={() => setIsLogin(!isLogin)} className="mt-3 text-blue-500">
+        <button
+          onClick={() => setIsLogin(!isLogin)} // Toggle between login and register panels
+          className="mt-3 text-blue-500"
+        >
           {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
         </button>
         <button onClick={onClose} className="mt-3 block text-gray-600">Close</button>
